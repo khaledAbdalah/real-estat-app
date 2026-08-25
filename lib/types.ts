@@ -37,7 +37,7 @@ export interface Review {
 }
 
 export interface PropertyFilters {
-  filter?: string;
-  query?: string;
+  filter: string;
+  query: string;
   limit?: number;
 }

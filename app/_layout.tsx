@@ -1,11 +1,11 @@
 import React, { useCallback } from "react";
 import { View } from "react-native";
-import { Redirect, Stack } from "expo-router";
+import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import * as SplashScreen from "expo-splash-screen";
 import { useFonts } from "expo-font";
 
-import GlobalProvider, { useGlobalContext } from "@/lib/global-provider";
+import GlobalProvider from "@/lib/global-provider";
 import "./global.css";
 
 SplashScreen.preventAutoHideAsync();
@@ -28,8 +28,6 @@ function AppNavigator() {
     "Rubik-ExtraBold": require("../assets/fonts/Rubik-ExtraBold.ttf"),
   });
 
-  const { isLogged, loading: authLoading } = useGlobalContext();
-
   const onLayoutRootView = useCallback(async () => {
     if (fontsLoaded || fontError) {
       await SplashScreen.hideAsync();
@@ -40,16 +38,10 @@ function AppNavigator() {
     return null;
   }
 
-  if (authLoading) {
-    return null;
-  }
-
   return (
     <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
       <StatusBar hidden />
       <Stack screenOptions={{ headerShown: false }} />
-
-      {!isLogged && <Redirect href="/sign-in" />}
     </View>
   );
 }
