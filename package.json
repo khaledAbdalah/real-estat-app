@@ -12,9 +12,9 @@
   },
   "dependencies": {
     "@expo/vector-icons": "^14.0.2",
+    "@react-native-async-storage/async-storage": "1.23.1",
     "@react-navigation/bottom-tabs": "^7.0.0",
     "@react-navigation/native": "^7.0.0",
-    "@react-native-async-storage/async-storage": "1.23.1",
     "@supabase/supabase-js": "^2.45.0",
     "expo": "~52.0.17",
     "expo-auth-session": "~6.0.3",
@@ -42,6 +42,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
+    "@types/node": "^26.2.0",
     "@types/react": "~18.3.12",
     "typescript": "^5.3.3"
   }
