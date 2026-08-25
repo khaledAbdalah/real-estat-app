@@ -28,13 +28,9 @@ const Comment = ({ item }: Props) => {
 
       <View className="flex flex-row items-center w-full justify-between mt-4">
         <View className="flex flex-row items-center">
-          <Image
-            source={icons.heart}
-            className="size-5"
-            tintColor={"#0061FF"}
-          />
+          <Image source={icons.star} className="size-5" />
           <Text className="text-black-300 text-sm font-rubik-medium ml-2">
-            120
+            {item.rating}
           </Text>
         </View>
         <Text className="text-black-100 text-sm font-rubik">
