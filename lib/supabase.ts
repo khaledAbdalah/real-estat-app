@@ -87,3 +87,88 @@ export async function getPropertyById(id: string): Promise<Property | null> {
 
   return data;
 }
+
+export interface AppUser {
+  id: string;
+  name: string;
+  email: string;
+  avatar: string;
+}
+
+function initialsAvatar(name: string): string {
+  return `https://api.dicebear.com/9.x/initials/png?seed=${encodeURIComponent(name)}`;
+}
+
+export async function login({
+  email,
+  password,
+}: {
+  email: string;
+  password: string;
+}): Promise<AppUser> {
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email,
+    password,
+  });
+
+  if (error || !data.session?.user) {
+    throw new Error(error?.message ?? "Sign in failed");
+  }
+
+  return mapAuthUser(data.session.user);
+}
+
+export async function signUp({
+  name,
+  email,
+  password,
+}: {
+  name: string;
+  email: string;
+  password: string;
+}): Promise<AppUser> {
+  const { data, error } = await supabase.auth.signUp({
+    email,
+    password,
+    options: { data: { full_name: name } },
+  });
+
+  if (error || !data.user) {
+    throw new Error(error?.message ?? "Sign up failed");
+  }
+
+  return mapAuthUser(data.user);
+}
+
+export async function logout(): Promise<boolean> {
+  const { error } = await supabase.auth.signOut();
+
+  if (error) {
+    console.error("logout:", error.message);
+    return false;
+  }
+
+  return true;
+}
+
+type AuthUser = {
+  id: string;
+  email?: string | null;
+  user_metadata?: Record<string, unknown> | null;
+};
+
+export function mapAuthUser(user: AuthUser): AppUser {
+  const email = user.email ?? "";
+  const fullName =
+    typeof user.user_metadata?.full_name === "string"
+      ? user.user_metadata.full_name
+      : "";
+  const name = fullName || email.split("@")[0] || "User";
+
+  return {
+    id: user.id,
+    name,
+    email,
+    avatar: initialsAvatar(name),
+  };
+}
