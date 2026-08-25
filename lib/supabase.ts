@@ -1,7 +1,7 @@
 import "react-native-url-polyfill/auto";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createClient } from "@supabase/supabase-js";
-import type { Property, PropertyFilters } from "./types";
+import type { Property, PropertyDetail, PropertyFilters } from "./types";
 
 export const config = {
   url: process.env.EXPO_PUBLIC_SUPABASE_URL,
@@ -73,10 +73,12 @@ export async function getProperties({
   return data ?? [];
 }
 
-export async function getPropertyById(id: string): Promise<Property | null> {
+export async function getPropertyById(
+  id: string
+): Promise<PropertyDetail | null> {
   const { data, error } = await supabase
     .from("properties")
-    .select("*")
+    .select("*, agent:agents(*), reviews(*, agent:agents(*)), gallery:galleries(*)")
     .eq("id", id)
     .single();
 

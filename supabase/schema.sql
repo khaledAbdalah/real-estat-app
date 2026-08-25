@@ -4,6 +4,14 @@ create extension if not exists "pgcrypto";
 
 -- ============ Tables ============
 
+create table public.agents (
+  id uuid primary key default gen_random_uuid(),
+  name text not null,
+  avatar text not null,
+  email text,
+  phone text
+);
+
 create table public.properties (
   id uuid primary key default gen_random_uuid(),
   name text not null,
@@ -18,15 +26,9 @@ create table public.properties (
   rating numeric(2, 1) not null default 0 check (rating between 0 and 5),
   image text not null,
   description text,
+  facilities text[] not null default '{}',
+  agent_id uuid references public.agents (id) on delete restrict,
   created_at timestamptz not null default now()
-);
-
-create table public.agents (
-  id uuid primary key default gen_random_uuid(),
-  name text not null,
-  avatar text not null,
-  email text,
-  phone text
 );
 
 create table public.reviews (
@@ -48,6 +50,7 @@ create table public.galleries (
 
 create index properties_created_at_idx on public.properties (created_at desc);
 create index properties_type_idx on public.properties (type);
+create index properties_agent_id_idx on public.properties (agent_id);
 create index galleries_property_id_idx on public.galleries (property_id);
 create index reviews_property_id_idx on public.reviews (property_id);
 create index reviews_agent_id_idx on public.reviews (agent_id);

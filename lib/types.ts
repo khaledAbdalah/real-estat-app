@@ -18,8 +18,18 @@ export interface Property {
   rating: number;
   image: string;
   description: string | null;
+  facilities: string[];
+  agent_id: string;
   created_at: string;
 }
+
+export type PropertyDetail = Property & {
+  agent: Agent | null;
+  reviews: ReviewWithAgent[];
+  gallery: GalleryImage[];
+};
+
+export type ReviewWithAgent = Review & { agent: Agent | null };
 
 export interface GalleryImage {
   id: string;
