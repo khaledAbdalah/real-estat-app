@@ -1,9 +1,10 @@
-import React, { useCallback } from "react";
+import React, { useEffect } from "react";
 import { View } from "react-native";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import * as SplashScreen from "expo-splash-screen";
 import { useFonts } from "expo-font";
+import { KeyboardProvider } from "react-native-keyboard-controller";
 
 import GlobalProvider from "@/lib/global-provider";
 import "./global.css";
@@ -12,9 +13,11 @@ SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   return (
-    <GlobalProvider>
-      <AppNavigator />
-    </GlobalProvider>
+    <KeyboardProvider>
+      <GlobalProvider>
+        <AppNavigator />
+      </GlobalProvider>
+    </KeyboardProvider>
   );
 }
 
@@ -28,9 +31,9 @@ function AppNavigator() {
     "Rubik-ExtraBold": require("../assets/fonts/Rubik-ExtraBold.ttf"),
   });
 
-  const onLayoutRootView = useCallback(async () => {
+  useEffect(() => {
     if (fontsLoaded || fontError) {
-      await SplashScreen.hideAsync();
+      SplashScreen.hideAsync();
     }
   }, [fontsLoaded, fontError]);
 
@@ -39,7 +42,7 @@ function AppNavigator() {
   }
 
   return (
-    <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
+    <View style={{ flex: 1 }}>
       <StatusBar hidden />
       <Stack screenOptions={{ headerShown: false }} />
     </View>

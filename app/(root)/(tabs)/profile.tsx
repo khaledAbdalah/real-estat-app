@@ -1,12 +1,12 @@
 import {
   Image,
   ImageSourcePropType,
-  SafeAreaView,
   ScrollView,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 import { logout } from "@/lib/supabase";
 import { useGlobalContext } from "@/lib/global-provider";
